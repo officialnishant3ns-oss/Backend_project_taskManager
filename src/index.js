@@ -20,6 +20,6 @@ connectdb()
     });
     
     app.get('/api/v1',(req,res)=>{
-        res.send('hello sir')
+        res.send('Welcome to Dashboard sir')
     })
     
