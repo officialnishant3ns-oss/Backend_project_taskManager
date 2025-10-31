@@ -15,6 +15,10 @@ const userschema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
     refresstoken: {
         type: String
     }
@@ -23,10 +27,10 @@ const userschema = new mongoose.Schema({
     { timestamps: true }
 )
 
-userschema.pre("save", async(next)=>{
-    if(!this.isModified(password)) return next()
-      this.password =await bcrypt.hash(this.password, 10)
-      next()
+userschema.pre("save", async (next) => {
+    if (!this.isModified(password)) return next()
+    this.password = await bcrypt.hash(this.password, 10)
+    next()
 })
 
 // that a function task password and compare to the this,password 
