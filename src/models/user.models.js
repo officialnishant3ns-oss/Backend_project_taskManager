@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+import bcrypt from 'bcrypt'
 const userschema = new mongoose.Schema({
 
     name: {
@@ -23,6 +23,16 @@ const userschema = new mongoose.Schema({
     { timestamps: true }
 )
 
+userschema.pre("save", async(next)=>{
+    if(!this.isModified(password)) return next()
+      this.password =await bcrypt.hash(this.password, 10)
+      next()
+})
+
+// that a function task password and compare to the this,password 
+userschema.methods.isPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
 
 
 
