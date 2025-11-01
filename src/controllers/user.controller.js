@@ -1,39 +1,35 @@
-import User from "../models/user.models"
-
+import User from "../models/user.models.js"
 
 
 const RegisterUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body
+        
+        const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            return res.status(400).json({ message: "Something is missing" })
+            return res.status(400).json({ message: "Something is missing" });
         }
-
-        const userExist =await User.findOne({ email })
-        if (!userExist) {
-            return res.status(400).json({ message: "User already exists" })
+        const userExist = await User.findOne({ email });
+        if (userExist) {
+            return res.status(400).json({ message: "User already exists" });
         }
-
-
+        
 
         const user = await User.create({
             name,
             email,
             password,
             isVerified: false,
-        })
-        const createduser = await User.findById(user._id).select(
-            "-password -refresstoken"
-        )
-        if (!createduser) {
-            throw new apierror(500, "something went wrong while registering the user")
+        });
+console.log("hello",user)
+        const createdUser = await User.findById(user._id).select("-password");
+        if (!createdUser) {
+            return res.status(500).json({ message: "Something went wrong creating the user" });
         }
 
-        return res.status(200).json({ success: true, message: "User register successfully", user })
-
-
+        return res.status(200).json({ success: true, message: "User registered successfully", user: createdUser });
     } catch (error) {
-        res.status(500).json({ message: "Somthing wrong while registering" })
+        return res.status(500).json({ message: "Something went wrong while registering" });
     }
-}
-export {RegisterUser} 
+};
+
+export { RegisterUser };
