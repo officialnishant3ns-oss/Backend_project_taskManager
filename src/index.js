@@ -17,7 +17,7 @@ connectdb()
     })
     .catch((error) => {
         console.log("mongo DB connection failed", error);
-    });
+    })
     
     app.get('/api/v1',(req,res)=>{
         res.send('Welcome to Dashboard sir')
